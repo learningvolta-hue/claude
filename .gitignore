@@ -1,6 +1,8 @@
 ## Build output
-bin/
-obj/
+screenshot-app/bin/
+screenshot-app/obj/
+screenshot-app/publish/
+screenshot-app/publish-small/
 *.user
 *.suo
 .vs/
