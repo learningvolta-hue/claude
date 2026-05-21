@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impara React — Tutorial Interattivo</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d2e;
+    --surface2: #252840;
+    --border: #2e3150;
+    --accent: #61dafb;
+    --accent2: #a78bfa;
+    --green: #4ade80;
+    --red: #f87171;
+    --yellow: #fbbf24;
+    --text: #e2e8f0;
+    --text-muted: #8892b0;
+    --sidebar-w: 260px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+
+  /* LAYOUT */
+  #app { display: flex; height: 100vh; overflow: hidden; }
+  #sidebar {
+    width: var(--sidebar-w); min-width: var(--sidebar-w);
+    background: var(--surface); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; overflow: hidden;
+    transition: transform .3s;
+  }
+  #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  #topbar {
+    height: 54px; background: var(--surface); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 16px; gap: 12px; flex-shrink: 0;
+  }
+  #content-area { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+
+  /* SIDEBAR */
+  .sidebar-header {
+    padding: 18px 16px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-header h1 { font-size: 16px; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .sidebar-header p { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .progress-bar-wrap { margin: 10px 16px; }
+  .progress-bar-track { height: 4px; background: var(--border); border-radius: 99px; }
+  .progress-bar-fill { height: 4px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; transition: width .4s; }
+  .progress-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .lessons-list { overflow-y: auto; flex: 1; padding: 8px 0; }
+  .chapter-title { padding: 10px 16px 4px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 600; }
+  .lesson-btn {
+    width: 100%; background: none; border: none; color: var(--text-muted);
+    text-align: left; padding: 9px 16px; cursor: pointer; font-size: 13px;
+    display: flex; align-items: center; gap: 10px; transition: background .15s, color .15s;
+    border-left: 3px solid transparent;
+  }
+  .lesson-btn:hover { background: var(--surface2); color: var(--text); }
+  .lesson-btn.active { background: var(--surface2); color: var(--accent); border-left-color: var(--accent); }
+  .lesson-btn.done .check { color: var(--green); }
+  .lesson-btn .check { font-size: 12px; margin-left: auto; }
+  .lesson-num { width: 20px; height: 20px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
+  .lesson-btn.active .lesson-num { background: var(--accent); color: var(--bg); }
+  .lesson-btn.done .lesson-num { background: var(--green); color: var(--bg); }
+
+  /* TOPBAR */
+  #menu-toggle { background: none; border: none; color: var(--text); cursor: pointer; font-size: 20px; display: none; }
+  #lesson-title-bar { font-size: 15px; font-weight: 600; color: var(--text); flex: 1; }
+  .nav-btn {
+    background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+    padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;
+    transition: background .15s;
+  }
+  .nav-btn:hover { background: var(--border); }
+  .nav-btn:disabled { opacity: .4; cursor: not-allowed; }
+  #lesson-counter { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+
+  /* LESSON CONTENT */
+  #lesson-view { flex: 1; overflow-y: auto; padding: 28px 32px; }
+  .lesson-card { max-width: 860px; margin: 0 auto; }
+  .lesson-tag { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 12px; }
+  .tag-theory { background: rgba(97,218,251,.15); color: var(--accent); }
+  .tag-practice { background: rgba(167,139,250,.15); color: var(--accent2); }
+  .tag-challenge { background: rgba(251,191,36,.15); color: var(--yellow); }
+  .lesson-card h2 { font-size: 26px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+  .lesson-card .subtitle { color: var(--text-muted); font-size: 15px; margin-bottom: 22px; }
+  .concept-box {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 18px 20px; margin-bottom: 18px;
+  }
+  .concept-box h3 { font-size: 14px; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .concept-box p, .concept-box li { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+  .concept-box ul { padding-left: 18px; }
+  .concept-box li { margin-bottom: 4px; }
+  .concept-box code { background: var(--surface2); padding: 1px 5px; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 12px; color: var(--accent); }
+  .analogy-box {
+    background: linear-gradient(135deg, rgba(97,218,251,.07), rgba(167,139,250,.07));
+    border: 1px solid rgba(97,218,251,.2); border-radius: 10px;
+    padding: 16px 20px; margin-bottom: 18px; display: flex; gap: 12px;
+  }
+  .analogy-box .icon { font-size: 24px; flex-shrink: 0; }
+  .analogy-box p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+  .analogy-box strong { color: var(--text); }
+  .steps-list { counter-reset: step; list-style: none; padding: 0; margin-bottom: 18px; }
+  .steps-list li { counter-increment: step; display: flex; gap: 14px; margin-bottom: 14px; font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  .steps-list li::before { content: counter(step); width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--bg); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .steps-list code { background: var(--surface2); padding: 1px 5px; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 12px; color: var(--accent); }
+
+  /* EDITOR AREA */
+  #editor-area {
+    height: 420px; display: flex; flex-direction: column;
+    border-top: 1px solid var(--border); flex-shrink: 0;
+  }
+  #editor-tabs {
+    display: flex; background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 8px; gap: 2px; align-items: center; flex-shrink: 0;
+  }
+  .tab-btn {
+    background: none; border: none; color: var(--text-muted); padding: 8px 14px;
+    cursor: pointer; font-size: 12px; border-bottom: 2px solid transparent; transition: color .15s;
+  }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-spacer { flex: 1; }
+  #run-btn {
+    background: linear-gradient(135deg, var(--accent), #38bdf8);
+    border: none; color: var(--bg); padding: 5px 16px; border-radius: 6px;
+    cursor: pointer; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px;
+    margin: 4px 0;
+  }
+  #run-btn:hover { opacity: .9; }
+  #reset-btn {
+    background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted);
+    padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; margin: 4px 4px 4px 0;
+  }
+  .editor-panels { flex: 1; display: flex; overflow: hidden; }
+  #code-panel { flex: 1; overflow: hidden; position: relative; }
+  #preview-panel {
+    width: 45%; background: white; border-left: 1px solid var(--border);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .preview-header {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 6px 12px; font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 6px;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  #preview-frame { flex: 1; border: none; width: 100%; background: white; }
+  #console-panel {
+    background: #0d1117; overflow-y: auto; padding: 10px 14px;
+    font-family: 'Fira Code', monospace; font-size: 12px; flex: 1;
+  }
+  .console-line { padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,.03); }
+  .console-log { color: var(--text-muted); }
+  .console-error { color: var(--red); }
+  .console-success { color: var(--green); }
+
+  /* CODE EDITOR */
+  #code-editor {
+    width: 100%; height: 100%; resize: none; border: none; outline: none;
+    background: #0d1117; color: #e2e8f0;
+    font-family: 'Fira Code', 'Consolas', monospace; font-size: 13px;
+    line-height: 1.6; padding: 14px 16px; tab-size: 2;
+    white-space: pre; overflow-x: auto;
+  }
+  #hint-box {
+    background: rgba(97,218,251,.08); border: 1px solid rgba(97,218,251,.2);
+    border-radius: 8px; padding: 12px 16px; margin-top: 16px; display: none;
+  }
+  #hint-box p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  #hint-box code { background: var(--surface2); padding: 1px 5px; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 12px; color: var(--accent); }
+  .hint-toggle { background: none; border: 1px dashed var(--border); color: var(--text-muted); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; margin-top: 12px; }
+  .hint-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* COMPLETE BANNER */
+  #complete-banner {
+    background: linear-gradient(135deg, rgba(74,222,128,.15), rgba(97,218,251,.1));
+    border: 1px solid var(--green); border-radius: 10px;
+    padding: 16px 20px; margin-top: 18px; display: none; align-items: center; gap: 14px;
+  }
+  #complete-banner .icon { font-size: 28px; }
+  #complete-banner p { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+  #complete-banner strong { color: var(--green); }
+  #next-lesson-btn {
+    margin-left: auto; background: var(--green); color: var(--bg);
+    border: none; padding: 8px 18px; border-radius: 6px; cursor: pointer;
+    font-size: 13px; font-weight: 700; white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* MOBILE */
+  #sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 99; }
+  @media (max-width: 768px) {
+    #menu-toggle { display: block; }
+    #sidebar {
+      position: fixed; left: 0; top: 0; bottom: 0; z-index: 100;
+      transform: translateX(-100%);
+    }
+    #sidebar.open { transform: translateX(0); }
+    #sidebar-overlay.open { display: block; }
+    #lesson-view { padding: 18px 16px; }
+    .editor-panels { flex-direction: column; }
+    #preview-panel { width: 100%; height: 200px; border-left: none; border-top: 1px solid var(--border); }
+    #editor-area { height: 480px; }
+    #lesson-counter { display: none; }
+  }
+  @media (max-width: 500px) {
+    #lesson-view { padding: 14px 12px; }
+    .lesson-card h2 { font-size: 20px; }
+    #run-btn span { display: none; }
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <!-- SIDEBAR -->
+  <div id="sidebar">
+    <div class="sidebar-header">
+      <h1>⚛ React Tutorial</h1>
+      <p>Impara React da zero</p>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+      <div class="progress-label" id="progress-label">0 / 10 lezioni completate</div>
+    </div>
+    <div class="lessons-list" id="lessons-list"></div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+    <div id="topbar">
+      <button id="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <div id="lesson-title-bar">Caricamento…</div>
+      <span id="lesson-counter"></span>
+      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">← Prec</button>
+      <button class="nav-btn" id="next-btn" onclick="navigate(1)">Succ →</button>
+    </div>
+
+    <div id="content-area">
+      <!-- LESSON TEXT -->
+      <div id="lesson-view">
+        <div class="lesson-card" id="lesson-card"></div>
+      </div>
+
+      <!-- EDITOR -->
+      <div id="editor-area">
+        <div id="editor-tabs">
+          <button class="tab-btn active" onclick="switchTab('editor')">✏️ Editor</button>
+          <button class="tab-btn" id="console-tab" onclick="switchTab('console')">📋 Console</button>
+          <div class="tab-spacer"></div>
+          <button id="reset-btn" onclick="resetCode()" title="Ripristina codice originale">↺ Reset</button>
+          <button id="run-btn" onclick="runCode()">▶ <span>Esegui</span></button>
+        </div>
+        <div class="editor-panels">
+          <div id="code-panel">
+            <textarea id="code-editor" spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
+          </div>
+          <div id="preview-panel">
+            <div class="preview-header">
+              <div class="dot" style="background:#ff5f57"></div>
+              <div class="dot" style="background:#febc2e"></div>
+              <div class="dot" style="background:#28c840"></div>
+              <span style="margin-left:4px">Anteprima Live</span>
+            </div>
+            <iframe id="preview-frame" sandbox="allow-scripts"></iframe>
+          </div>
+          <div id="console-panel" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== LESSONS DATA =====
+const LESSONS = [
+  {
+    id: 0,
+    title: "Cos'è React?",
+    chapter: "Fondamenti",
+    tag: "theory",
+    tagLabel: "Teoria",
+    subtitle: "Capire cosa fa React e perché esiste",
+    content: `
+      <div class="analogy-box">
+        <div class="icon">🧩</div>
+        <p><strong>Immagina un sito web come un puzzle.</strong> React ti permette di costruire ogni pezzo del puzzle separatamente (li chiamiamo <strong>componenti</strong>) e poi assemblarli insieme. Se cambi un pezzo, solo quel pezzo si aggiorna — non l'intero puzzle.</p>
+      </div>
+      <div class="concept-box">
+        <h3>💡 Cosa fa React?</h3>
+        <ul>
+          <li>Crea interfacce utente (UI) in modo organizzato</li>
+          <li>Aggiorna automaticamente la pagina quando i dati cambiano</li>
+          <li>Divide la pagina in piccoli blocchi riutilizzabili chiamati <code>componenti</code></li>
+          <li>È usato da Facebook, Instagram, Netflix e migliaia di app</li>
+        </ul>
+      </div>
+      <div class="concept-box">
+        <h3>🔤 JSX — HTML dentro JavaScript</h3>
+        <p>React usa una sintassi speciale chiamata <code>JSX</code>. Sembra HTML ma è JavaScript. Il codice nell'editor a destra è JSX: prova a cliccare <strong>▶ Esegui</strong> per vedere il risultato!</p>
+      </div>
+    `,
+    hint: "Prova a cambiare il testo dentro <h1> e clicca Esegui per vedere il risultato!",
+    code: `// Il tuo primo componente React!
+// Un componente è semplicemente una funzione
+// che restituisce del codice JSX (simile all'HTML)
+
+function Benvenuto() {
+  return (
+    <div>
+      <h1>👋 Ciao, mondo React!</h1>
+      <p>Questo è il mio primo componente.</p>
+      <p>Modifica questo testo e clicca Esegui!</p>
+    </div>
+  );
+}
+
+// Questa riga "monta" il componente nella pagina
+ReactDOM.render(<Benvenuto />, document.getElementById('root'));`,
+    validate: code => code.includes('ReactDOM.render') || code.includes('createRoot')
+  },
+
+  {
+    id: 1,
+    title: "JSX — Scrivere HTML in JS",
+    chapter: "Fondamenti",
+    tag: "practice",
+    tagLabel: "Pratica",
+    subtitle: "Capire come funziona JSX e le sue regole",
+    content: `
+      <div class="analogy-box">
+        <div class="icon">📝</div>
+        <p><strong>JSX è come HTML con superpoteri.</strong> Puoi scrivere strutture visive (come HTML) direttamente nel tuo codice JavaScript. Il browser non capisce JSX da solo — React lo traduce automaticamente.</p>
+      </div>
+      <div class="concept-box">
+        <h3>📏 Regole importanti del JSX</h3>
+        <ul>
+          <li>Ogni componente deve restituire <strong>un solo elemento radice</strong></li>
+          <li>Usa <code>className</code> invece di <code>class</code> (perché <code>class</code> è una parola riservata in JS)</li>
+          <li>I tag vuoti devono chiudersi: <code>&lt;img /&gt;</code>, <code>&lt;br /&gt;</code></li>
+          <li>Le espressioni JavaScript vanno tra <code>{}</code> graffe</li>
+        </ul>
+      </div>
+      <div class="concept-box">
+        <h3>🔧 Esercizio</h3>
+        <p>Nel codice a destra vedi una card informativa. Il tuo compito è:</p>
+        <ul style="margin-top:8px">
+          <li>Cambia il nome nell'intestazione</li>
+          <li>Aggiungi una seconda <code>&lt;p&gt;</code> con il tuo hobby preferito</li>
+          <li>Clicca Esegui per vedere il risultato!</li>
+        </ul>
+      </div>
+    `,
+    hint: "Ricorda: in JSX usa className al posto di class. Per inserire variabili usa le {graffe}.",
+    code: `// Regola JSX: un solo elemento radice!
+// Uso <div> come "contenitore"
+
+const nome = "Mario";
+const eta = 25;
+
+function CartaPersonale() {
+  return (
+    <div className="card">
+      <h2>👤 {nome}</h2>
+      <p>Età: {eta} anni</p>
+      <p>Città: Roma</p>
+      {/* Aggiungi qui una nuova riga <p> con il tuo hobby! */}
+    </div>
+  );
+}
+
+ReactDOM.render(<CartaPersonale />, document.getElementById('root'));`,
+    validate: code => code.includes('<p>') && (code.match(/<p>/g) || []).length >= 3
+  },
+
+  {
+    id: 2,
+    title: "Componenti e Props",
+    chapter: "Componenti",
+    tag: "practice",
+    tagLabel: "Pratica",
+    subtitle: "Creare componenti riutilizzabili con le props",
+    content: `
+      <div class="analogy-box">
+        <div class="icon">🏭</div>
+        <p><strong>Un componente è come uno stampino per biscotti.</strong> Lo stampino è sempre lo stesso, ma puoi usare impasti diversi per ottenere biscotti diversi. Le <strong>props</strong> sono quell'impasto — dati che passi al componente per personalizzarlo.</p>
+      </div>
+      <div class="concept-box">
+        <h3>📦 Cos'sono le Props?</h3>
+        <ul>
+          <li><strong>Props</strong> = <em>properties</em> = proprietà del componente</li>
+          <li>Si passano come attributi HTML: <code>&lt;Saluto nome="Alice" /&gt;</code></li>
+          <li>All'interno del componente si leggono da <code>props.nome</code></li>
+          <li>Le props sono <strong>sola lettura</strong> — il componente non le può modificare</li>
+        </ul>
+      </div>
+      <div class="concept-box">
+        <h3>🔧 Esercizio</h3>
+        <p>Il codice mostra 2 carte utente. Aggiungi una <strong>terza carta</strong> con il tuo nome e città preferita. Usa il componente <code>CartaUtente</code> già esistente!</p>
+      </div>
+    `,
+    hint: "Aggiungi una terza riga: <CartaUtente nome=\"TuoNome\" citta=\"TuaCitta\" emoji=\"🙂\" />",
+    code: `// Componente riutilizzabile con Props
+function CartaUtente(props) {
+  return (
+    <div style={{
+      background: '#1a1d2e',
+      border: '1px solid #2e3150',
+      borderRadius: '10px',
+      padding: '16px',
+      margin: '8px',
+      display: 'inline-block',
+      minWidth: '160px',
+      textAlign: 'center'
+    }}>
+      <div style={{fontSize: '32px'}}>{props.emoji}</div>
+      <h3 style={{color: '#61dafb', margin: '8px 0 4px'}}>{props.nome}</h3>
+      <p style={{color: '#8892b0', fontSize: '13px'}}>📍 {props.citta}</p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h2 style={{color: '#e2e8f0', marginBottom: '12px'}}>👥 Team</h2>
+      <CartaUtente nome="Alice" citta="Milano" emoji="👩‍💻" />
+      <CartaUtente nome="Bruno" citta="Roma" emoji="👨‍🎨" />
+      {/* Aggiungi qui una terza CartaUtente! */}
+    </div>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));`,
+    validate: code => (code.match(/<CartaUtente/g) || []).length >= 3
+  },
+
+  {
+    id: 3,
+    title: "State — Dati che cambiano",
+    chapter: "State & Interattività",
+    tag: "theory",
+    tagLabel: "Teoria",
+    subtitle: "Usare useState per rendere i componenti interattivi",
+    content: `
+      <div class="analogy-box">
+        <div class="icon">🔋</div>
+        <p><strong>Lo State è come la batteria di un telefono.</strong> Il livello della batteria cambia nel tempo, e ogni volta che cambia il telefono aggiorna l'indicatore sullo schermo. Con <code>useState</code>, React fa la stessa cosa per la tua UI.</p>
+      </div>
+      <div class="concept-box">
+        <h3>🪝 useState — il tuo primo Hook</h3>
+        <ul>
+          <li><code>const [valore, setValore] = useState(iniziale)</code></li>
+          <li><code>valore</code> = il dato corrente</li>
+          <li><code>setValore</code> = la funzione per cambiarlo</li>
+          <li>Ogni volta che chiami <code>setValore</code>, React ri-renderizza il componente automaticamente</li>
+        </ul>
+      </div>
+      <ol class="steps-list">
+        <li>Importa <code>useState</code> da React (già fatto nell'editor)</li>
+        <li>Dichiara lo state: <code>const [contatore, setContatore] = useState(0)</code></li>
+        <li>Usa <code>contatore</code> nel JSX per mostrare il valore</li>
+        <li>Chiama <code>setContatore(contatore + 1)</code> per incrementarlo</li>
+      </ol>
+    `,
+    hint: "Prova ad aggiungere un secondo bottone che decrementa il contatore: setContatore(contatore - 1)",
+    code: `const { useState } = React;
+
+function Contatore() {
+  // State: contatore inizia da 0
+  const [contatore, setContatore] = useState(0);
+
+  return (
+    <div style={{textAlign: 'center', padding: '20px'}}>
+      <h2 style={{color: '#e2e8f0', marginBottom: '16px'}}>
+        🔢 Contatore
+      </h2>
+
+      <div style={{
+        fontSize: '64px',
+        fontWeight: 'bold',
+        color: '#61dafb',
+        margin: '20px 0'
+      }}>
+        {contatore}
+      </div>
+
+      <button
+        onClick={() => setContatore(contatore + 1)}
+        style={{
+          background: '#61dafb', color: '#0f1117',
+          border: 'none', padding: '10px 24px',
+          borderRadius: '8px', fontSize: '16px',
+          cursor: 'pointer', fontWeight: 'bold',
+          margin: '0 8px'
+        }}
+      >
+        + Incrementa
+      </button>
+
+      {/* Aggiungi qui un bottone che decrementa! */}
+
+      <button
+        onClick={() => setContatore(0)}
+        style={{
+          background: '#2e3150', color: '#e2e8f0',
+          border: '1px solid #2e3150', padding: '10px 24px',
+          borderRadius: '8px', fontSize: '16px',
+          cursor: 'pointer', margin: '0 8px'
+        }}
+      >
+        Reset
+      </button>
+    </div>
+  );
+}
+
+ReactDOM.render(<Contatore />, document.getElementById('root'));`,
+    validate: code => code.includes('useState') && code.includes('setContatore')
+  },
+
+  {
+    id: 4,
+    title: "Gestire gli Eventi",
+    chapter: "State & Interattività",
+    tag: "practice",
+    tagLabel: "Pratica",
+    subtitle: "onClick, onChange e gestori di eventi in React",
+    content: `
+      <div class="analogy-box">
+        <div class="icon">🎮</div>
+        <p><strong>Gli eventi sono le azioni dell'utente:</strong> cliccare un bottone, digitare in un campo, passare il mouse su un elemento. React intercetta questi eventi e ti permette di rispondere con JavaScript.</p>
+      </div>
+      <div class="concept-box">
+        <h3>⚡ Eventi più comuni</h3>
+        <ul>
+          <li><code>onClick</code> — quando si clicca</li>
+          <li><code>onChange</code> — quando cambia un input</li>
+          <li><code>onSubmit</code> — quando si invia un form</li>
+          <li><code>onMouseEnter</code> / <code>onMouseLeave</code> — hover</li>
+        </ul>
+      </div>
+      <div class="concept-box">
+        <h3>🔧 Esercizio</h3>
+        <p>Hai un campo di testo che aggiorna il messaggio in tempo reale. Il tuo compito è aggiungere un <strong>bottone "Cancella"</strong> che resetta il testo a stringa vuota <code>""</code>.</p>
+      </div>
+    `,
+    hint: "Aggiungi un bottone con onClick={() => setTesto('')} per cancellare il testo.",
+    code: `const { useState } = React;
+
+function CampoMessaggio() {
+  const [testo, setTesto] = useState('');
+
+  // Ogni volta che l'utente scrive, aggiorna lo state
+  function gestisciCambiamento(evento) {
+    setTesto(evento.target.value);
+  }
+
+  return (
+    <div style={{padding: '24px', maxWidth: '400px'}}>
+      <h2 style={{color: '#e2e8f0', marginBottom: '16px'}}>
+        💬 Scrivi un messaggio
+      </h2>
+
+      <input
+        type="text"
+        value={testo}
+        onChange={gestisciCambiamento}
+        placeholder="Scrivi qualcosa..."
+        style={{
+          width: '100%', padding: '10px 14px',
+          background: '#1a1d2e', border: '1px solid #2e3150',
+          borderRadius: '8px', color: '#e2e8f0', fontSize: '14px',
+          outline: 'none', marginBottom: '12px'
+        }}
+      />
+
+      {/* Aggiungi qui un bottone "Cancella" che fa setTesto('') */}
+
+      <div style={{
+        background: '#1a1d2e', border: '1px solid #2e3150',
+        borderRadius: '8px', padding: '12px 16px', marginTop: '8px'
+      }}>
+        <p style={{color: '#8892b0', fontSize: '12px', marginBottom: '4px'}}>
+          ANTEPRIMA:
+        </p>
+        <p style={{color: '#e2e8f0', fontSize: '15px', minHeight: '20px'}}>
+          {testo || <em style={{color:'#4a5568'}}>Nessun testo...</em>}
+        </p>
+        <p style={{color: '#8892b0', fontSize: '12px', marginTop: '6px'}}>
+          Caratteri: {testo.length}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.render(<CampoMessaggio />, document.getElementById('root'));`,
+    validate: code => code.includes("setTesto('')") || code.includes('setTesto("")')
+  },
+
+  {
+    id: 5,
+    title: "Liste e Array",
+    chapter: "Dati & Liste",
+    tag: "practice",
+    tagLabel: "Pratica",
+    subtitle: "Renderizzare elenchi con .map()",
+    content: `
+      <div class="analogy-box">
+        <div class="icon">📋</div>
+        <p><strong>React usa il metodo <code>.map()</code> di JavaScript</strong> per trasformare ogni elemento di un array in un componente JSX. È come prendere ogni nome in una lista e creare automaticamente un biglietto per ognuno.</p>
+      </div>
+      <div class="concept-box">
+        <h3>🔑 La prop key</h3>
+        <p>Quando crei una lista con <code>.map()</code>, ogni elemento deve avere una prop <code>key</code> unica. Questo aiuta React a capire quale elemento è cambiato quando la lista si aggiorna.</p>
+      </div>
+      <div class="concept-box">
+        <h3>🔧 Esercizio</h3>
+        <p>Hai una lista della spesa. Il tuo compito è aggiungere la funzione per <strong>rimuovere un elemento</strong> dalla lista cliccando il pulsante 🗑️ accanto ad esso.</p>
+      </div>
+    `,
+    hint: "Per rimuovere un elemento usa: setArticoli(articoli.filter(a => a.id !== id))",
+    code: `const { useState } = React;
+
+const articoliIniziali = [
+  { id: 1, nome: '🍕 Pizza', prezzo: '8€' },
+  { id: 2, nome: '🥤 Bibita', prezzo: '2€' },
+  { id: 3, nome: '🍰 Torta', prezzo: '5€' },
+  { id: 4, nome: '☕ Caffè', prezzo: '1.50€' },
+];
+
+function ListaSpesa() {
+  const [articoli, setArticoli] = useState(articoliIniziali);
+
+  function rimuoviArticolo(id) {
+    // TODO: filtra l'array per rimuovere l'articolo con questo id
+    // suggerimento: usa setArticoli e .filter()
+  }
+
+  return (
+    <div style={{padding: '20px', maxWidth: '340px'}}>
+      <h2 style={{color: '#e2e8f0', marginBottom: '16px'}}>
+        🛒 Lista della Spesa ({articoli.length} articoli)
+      </h2>
+      {articoli.map(articolo => (
+        <div key={articolo.id} style={{
+          display: 'flex', alignItems: 'center',
+          background: '#1a1d2e', border: '1px solid #2e3150',
+          borderRadius: '8px', padding: '10px 14px',
+          marginBottom: '8px'
+        }}>
+          <span style={{flex: 1, color: '#e2e8f0'}}>{articolo.nome}</span>
+          <span style={{color: '#61dafb', marginRight: '12px'}}>{articolo.prezzo}</span>
+          <button
+            onClick={() => rimuoviArticolo(articolo.id)}
+            style={{background:'none', border:'none', cursor:'pointer', fontSize:'16px'}}
+          >🗑️</button>
+        </div>
+      ))}
+      {articoli.length === 0 && (
+        <p style={{color: '#8892b0', textAlign: 'center', padding: '20px'}}>
+          Lista vuota! 🎉
+        </p>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.render(<ListaSpesa />, document.getElementById('root'));`,
+    validate: code => code.includes('filter')
+  },
+
+  {
+    id: 6,
+    title: "Rendering Condizionale",
+    chapter: "Dati & Liste",
+    tag: "practice",
+    tagLabel: "Pratica",
+    subtitle: "Mostrare o nascondere elementi in base a condizioni",
+    content: `
+      <div class="analogy-box">
+        <div class="icon">🚦</div>
+        <p><strong>Il rendering condizionale è come un semaforo:</strong> mostra cose diverse a seconda della situazione. Se l'utente è loggato mostra il suo profilo, altrimenti mostra il form di login.</p>
+      </div>
+      <div class="concept-box">
+        <h3>3 modi per fare rendering condizionale</h3>
+        <ul>
+          <li><code>if / else</code> — prima del return</li>
+          <li><code>condizione && &lt;Elemento /&gt;</code> — inline con &&</li>
+          <li><code>condizione ? &lt;A /&gt; : &lt;B /&gt;</code> — operatore ternario</li>
+        </ul>
+      </div>
+      <div class="concept-box">
+        <h3>🔧 Esercizio</h3>
+        <p>Hai un bottone che simula il login. Completa il componente aggiungendo il <strong>messaggio di benvenuto</strong> quando l'utente è loggato.</p>
+      </div>
+    `,
+    hint: "Usa l'operatore ternario: {loggato ? <div>Benvenuto!</div> : <div>Fai login</div>}",
+    code: `const { useState } = React;
+
+function PaginaLogin() {
+  const [loggato, setLoggato] = useState(false);
+  const [nome] = useState('Marco');
+
+  return (
+    <div style={{padding: '28px', maxWidth: '360px'}}>
+      <h2 style={{color: '#e2e8f0', marginBottom: '20px'}}>
+        🔐 Area Riservata
+      </h2>
+
+      {/* Mostra uno dei due blocchi in base a "loggato" */}
+      {loggato ? (
+        // Utente loggato — mostra questo
+        <div style={{
+          background: 'rgba(74,222,128,.1)',
+          border: '1px solid #4ade80',
+          borderRadius: '10px', padding: '20px',
+          textAlign: 'center'
+        }}>
+          <div style={{fontSize: '48px'}}>🎉</div>
+          <h3 style={{color: '#4ade80', margin: '12px 0 8px'}}>
+            Benvenuto, {nome}!
+          </h3>
+          <p style={{color: '#8892b0', marginBottom: '16px'}}>
+            Sei autenticato con successo.
+          </p>
+          <button
+            onClick={() => setLoggato(false)}
+            style={{
+              background: '#2e3150', color: '#e2e8f0',
+              border: 'none', padding: '8px 20px',
+              borderRadius: '6px', cursor: 'pointer'
+            }}
+          >Logout</button>
+        </div>
+      ) : (
+        // Utente NON loggato — mostra questo
+        <div style={{
+          background: '#1a1d2e', border: '1px solid #2e3150',
+          borderRadius: '10px', padding: '20px', textAlign: 'center'
+        }}>
+          <p style={{color: '#8892b0', marginBottom: '16px'}}>
+            Devi effettuare il login per accedere
+          </p>
+          <button
+            onClick={() => setLoggato(true)}
+            style={{
+              background: '#61dafb', color: '#0f1117',
+              border: 'none', padding: '10px 28px',
+              borderRadius: '8px', cursor: 'pointer',
+              fontWeight: 'bold', fontSize: '14px'
+            }}
+          >🔑 Accedi</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.render(<PaginaLogin />, document.getElementById('root'));`,
+    validate: code => code.includes('loggato') && (code.includes('?') || code.includes('&&'))
+  },
+
+  {
+    id: 7,
+    title: "useEffect — Effetti Collaterali",
+    chapter: "Hooks Avanzati",
+    tag: "theory",
+    tagLabel: "Teoria",
+    subtitle: "Eseguire codice dopo il render con useEffect",
+    content: `
+      <div class="analogy-box">
+        <div class="icon">⏰</div>
+        <p><strong>useEffect è come impostare una sveglia.</strong> Dici a React: "Quando questo componente appare sullo schermo (o quando questo dato cambia), esegui questa azione." Usato per chiamate API, timer, aggiornare il titolo della pagina.</p>
+      </div>
+      <div class="concept-box">
+        <h3>📐 Sintassi base</h3>
+        <ul>
+          <li><code>useEffect(() => { ... }, [])</code> — esegue solo al mount</li>
+          <li><code>useEffect(() => { ... }, [valore])</code> — esegue quando <code>valore</code> cambia</li>
+          <li><code>useEffect(() => { ... })</code> — esegue ad ogni render</li>
+        </ul>
+      </div>
+      <div class="concept-box">
+        <h3>🔧 Esercizio</h3>
+        <p>L'editor mostra un timer. Usa <code>useEffect</code> per far partire il timer automaticamente al caricamento. Aggiungi anche un effetto che aggiorna il titolo della pagina con i secondi.</p>
+      </div>
+    `,
+    hint: "Aggiungi: useEffect(() => { document.title = 'Secondi: ' + secondi; }, [secondi]);",
+    code: `const { useState, useEffect } = React;
+
+function Timer() {
+  const [secondi, setSecondi] = useState(0);
+  const [attivo, setAttivo] = useState(false);
+
+  // Effetto 1: gestisce il timer
+  useEffect(() => {
+    if (!attivo) return;
+
+    // setInterval chiama la funzione ogni 1000ms (1 secondo)
+    const intervallo = setInterval(() => {
+      setSecondi(s => s + 1);
+    }, 1000);
+
+    // La funzione di "cleanup" ferma il timer quando il componente si smonta
+    return () => clearInterval(intervallo);
+  }, [attivo]); // Si ri-esegue quando "attivo" cambia
+
+  // Effetto 2: aggiorna il titolo della pagina
+  // TODO: aggiungi un useEffect che aggiorna document.title
+  // con il numero di secondi quando "secondi" cambia
+
+  const minuti = Math.floor(secondi / 60);
+  const sec = secondi % 60;
+  const display = \`\${String(minuti).padStart(2,'0')}:\${String(sec).padStart(2,'0')}\`;
+
+  return (
+    <div style={{textAlign: 'center', padding: '28px'}}>
+      <h2 style={{color: '#e2e8f0', marginBottom: '20px'}}>⏱ Timer</h2>
+      <div style={{fontSize: '56px', fontFamily: 'monospace', color: '#61dafb', marginBottom: '24px'}}>
+        {display}
+      </div>
+      <button onClick={() => setAttivo(!attivo)} style={{
+        background: attivo ? '#f87171' : '#4ade80', color: '#0f1117',
+        border: 'none', padding: '10px 28px', borderRadius: '8px',
+        cursor: 'pointer', fontWeight: 'bold', fontSize: '14px', margin: '0 8px'
+      }}>
+        {attivo ? '⏸ Pausa' : '▶ Avvia'}
+      </button>
+      <button onClick={() => { setSecondi(0); setAttivo(false); }} style={{
+        background: '#2e3150', color: '#e2e8f0',
+        border: 'none', padding: '10px 24px', borderRadius: '8px',
+        cursor: 'pointer', fontSize: '14px', margin: '0 8px'
+      }}>
+        ↺ Reset
+      </button>
+    </div>
+  );
+}
+
+ReactDOM.render(<Timer />, document.getElementById('root'));`,
+    validate: code => (code.match(/useEffect/g) || []).length >= 2
+  },
+
+  {
+    id: 8,
+    title: "Form Controllati",
+    chapter: "Hooks Avanzati",
+    tag: "practice",
+    tagLabel: "Pratica",
+    subtitle: "Gestire form con state in React",
+    content: `
+      <div class="analogy-box">
+        <div class="icon">📝</div>
+        <p><strong>Un form controllato è come un traduttore in tempo reale.</strong> Ogni tasto che premi aggiorna lo state React, e React a sua volta aggiorna quello che vedi nel campo. React è sempre "la fonte di verità".</p>
+      </div>
+      <div class="concept-box">
+        <h3>🎯 Pattern standard</h3>
+        <ul>
+          <li>Ogni campo ha il suo state: <code>const [email, setEmail] = useState('')</code></li>
+          <li>Il campo usa <code>value={email}</code> — React controlla il valore</li>
+          <li><code>onChange={e => setEmail(e.target.value)}</code> — aggiorna lo state</li>
+          <li>Al submit: <code>e.preventDefault()</code> per non ricaricare la pagina</li>
+        </ul>
+      </div>
+      <div class="concept-box">
+        <h3>🔧 Esercizio</h3>
+        <p>Hai un form di registrazione parziale. Aggiungi la <strong>validazione</strong>: mostra un messaggio di errore se la password ha meno di 6 caratteri al momento del submit.</p>
+      </div>
+    `,
+    hint: "Nel gestore handleSubmit aggiungi: if (password.length < 6) { setErrore('Password troppo corta!'); return; }",
+    code: `const { useState } = React;
+
+function FormRegistrazione() {
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errore, setErrore] = useState('');
+  const [successo, setSuccesso] = useState(false);
+
+  function handleSubmit(e) {
+    e.preventDefault(); // impedisce il reload della pagina
+    setErrore('');
+
+    // TODO: aggiungi validazione
+    // Se password.length < 6, imposta un errore e ritorna
+
+    setSuccesso(true);
+  }
+
+  const inputStyle = {
+    width: '100%', padding: '10px 14px', marginBottom: '12px',
+    background: '#1a1d2e', border: '1px solid #2e3150',
+    borderRadius: '8px', color: '#e2e8f0', fontSize: '14px', outline: 'none'
+  };
+
+  if (successo) return (
+    <div style={{padding:'28px', textAlign:'center'}}>
+      <div style={{fontSize:'52px'}}>✅</div>
+      <h3 style={{color:'#4ade80', margin:'12px 0 8px'}}>Registrazione Completata!</h3>
+      <p style={{color:'#8892b0'}}>Benvenuto, {nome}!</p>
+    </div>
+  );
+
+  return (
+    <div style={{padding: '24px', maxWidth: '340px'}}>
+      <h2 style={{color: '#e2e8f0', marginBottom: '20px'}}>📋 Registrati</h2>
+      <form onSubmit={handleSubmit}>
+        <input style={inputStyle} type="text" placeholder="Nome"
+          value={nome} onChange={e => setNome(e.target.value)} required />
+        <input style={inputStyle} type="email" placeholder="Email"
+          value={email} onChange={e => setEmail(e.target.value)} required />
+        <input style={inputStyle} type="password" placeholder="Password (min 6 caratteri)"
+          value={password} onChange={e => setPassword(e.target.value)} required />
+        {errore && <p style={{color:'#f87171', fontSize:'13px', marginBottom:'10px'}}>⚠ {errore}</p>}
+        <button type="submit" style={{
+          width:'100%', background:'#61dafb', color:'#0f1117',
+          border:'none', padding:'11px', borderRadius:'8px',
+          cursor:'pointer', fontWeight:'bold', fontSize:'14px'
+        }}>Registrati →</button>
+      </form>
+    </div>
+  );
+}
+
+ReactDOM.render(<FormRegistrazione />, document.getElementById('root'));`,
+    validate: code => code.includes('password.length') && code.includes('setErrore')
+  },
+
+  {
+    id: 9,
+    title: "Progetto Finale: Todo App",
+    chapter: "Progetto",
+    tag: "challenge",
+    tagLabel: "Sfida",
+    subtitle: "Crea una Todo App completa con tutto ciò che hai imparato",
+    content: `
+      <div class="analogy-box">
+        <div class="icon">🏆</div>
+        <p><strong>Ora metti tutto insieme!</strong> Una Todo App è il classico progetto per imparare React perché usa componenti, state, eventi, liste e rendering condizionale — tutto ciò che hai studiato in questo tutorial.</p>
+      </div>
+      <div class="concept-box">
+        <h3>✅ Funzionalità già presenti</h3>
+        <ul>
+          <li>Aggiungere nuove attività</li>
+          <li>Visualizzare la lista</li>
+        </ul>
+      </div>
+      <div class="concept-box">
+        <h3>🚀 Il tuo compito — Aggiungi:</h3>
+        <ul>
+          <li><strong>1.</strong> Segna un'attività come completata cliccandoci sopra</li>
+          <li><strong>2.</strong> Mostra il contatore "X completate / Y totali"</li>
+          <li><strong>3.</strong> (Bonus) Aggiungi un bottone per eliminare le completate</li>
+        </ul>
+      </div>
+    `,
+    hint: "Per completare: aggiungi un campo 'completata: false' e usa setTodos(todos.map(t => t.id === id ? {...t, completata: !t.completata} : t))",
+    code: `const { useState } = React;
+
+let prossimoId = 4;
+
+function TodoApp() {
+  const [todos, setTodos] = useState([
+    { id: 1, testo: 'Imparare i componenti React', completata: true },
+    { id: 2, testo: 'Capire useState', completata: true },
+    { id: 3, testo: 'Costruire la mia prima app', completata: false },
+  ]);
+  const [nuovoTesto, setNuovoTesto] = useState('');
+
+  function aggiungiTodo() {
+    if (!nuovoTesto.trim()) return;
+    setTodos([...todos, { id: prossimoId++, testo: nuovoTesto, completata: false }]);
+    setNuovoTesto('');
+  }
+
+  function toggleTodo(id) {
+    // TODO: cambia completata da true a false o viceversa
+    // per il todo con quell'id
+  }
+
+  const completate = todos.filter(t => t.completata).length;
+
+  return (
+    <div style={{padding: '24px', maxWidth: '400px'}}>
+      <h2 style={{color: '#e2e8f0', marginBottom: '6px'}}>📝 Le mie Attività</h2>
+
+      {/* TODO: aggiungi qui il contatore completate/totali */}
+
+      <div style={{display:'flex', gap:'8px', margin:'16px 0'}}>
+        <input
+          value={nuovoTesto}
+          onChange={e => setNuovoTesto(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && aggiungiTodo()}
+          placeholder="Nuova attività..."
+          style={{
+            flex:1, padding:'9px 13px',
+            background:'#1a1d2e', border:'1px solid #2e3150',
+            borderRadius:'8px', color:'#e2e8f0', fontSize:'13px', outline:'none'
+          }}
+        />
+        <button onClick={aggiungiTodo} style={{
+          background:'#61dafb', color:'#0f1117', border:'none',
+          padding:'9px 18px', borderRadius:'8px', cursor:'pointer', fontWeight:'bold'
+        }}>+</button>
+      </div>
+
+      {todos.map(todo => (
+        <div
+          key={todo.id}
+          onClick={() => toggleTodo(todo.id)}
+          style={{
+            display:'flex', alignItems:'center', gap:'12px',
+            background:'#1a1d2e', border:'1px solid #2e3150',
+            borderRadius:'8px', padding:'11px 14px', marginBottom:'8px',
+            cursor:'pointer', transition:'opacity .2s',
+            opacity: todo.completata ? 0.6 : 1
+          }}
+        >
+          <span style={{fontSize:'18px'}}>
+            {todo.completata ? '✅' : '⬜'}
+          </span>
+          <span style={{
+            color: '#e2e8f0', fontSize:'14px', flex:1,
+            textDecoration: todo.completata ? 'line-through' : 'none'
+          }}>
+            {todo.testo}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+ReactDOM.render(<TodoApp />, document.getElementById('root'));`,
+    validate: code => code.includes('completata') && code.includes('toggleTodo') && code.includes('map')
+  }
+];
+
+// ===== STATE =====
+let currentLesson = 0;
+let completed = new Set();
+let activeTab = 'editor';
+let userCode = {};
+
+// ===== INIT =====
+function init() {
+  buildSidebar();
+  loadLesson(0);
+}
+
+function buildSidebar() {
+  const list = document.getElementById('lessons-list');
+  let currentChapter = '';
+  list.innerHTML = '';
+
+  LESSONS.forEach((lesson, i) => {
+    if (lesson.chapter !== currentChapter) {
+      currentChapter = lesson.chapter;
+      const ch = document.createElement('div');
+      ch.className = 'chapter-title';
+      ch.textContent = lesson.chapter;
+      list.appendChild(ch);
+    }
+    const btn = document.createElement('button');
+    btn.className = 'lesson-btn';
+    btn.id = `lesson-btn-${i}`;
+    btn.onclick = () => { loadLesson(i); closeSidebar(); };
+    btn.innerHTML = `
+      <div class="lesson-num">${i + 1}</div>
+      <span>${lesson.title}</span>
+      <span class="check"></span>
+    `;
+    list.appendChild(btn);
+  });
+  updateSidebar();
+}
+
+function updateSidebar() {
+  LESSONS.forEach((_, i) => {
+    const btn = document.getElementById(`lesson-btn-${i}`);
+    if (!btn) return;
+    btn.className = 'lesson-btn' + (i === currentLesson ? ' active' : '') + (completed.has(i) ? ' done' : '');
+    btn.querySelector('.check').textContent = completed.has(i) ? '✓' : '';
+  });
+
+  const pct = Math.round(completed.size / LESSONS.length * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${completed.size} / ${LESSONS.length} lezioni completate`;
+}
+
+function loadLesson(index) {
+  currentLesson = index;
+  const lesson = LESSONS[index];
+
+  document.getElementById('lesson-title-bar').textContent = lesson.title;
+  document.getElementById('lesson-counter').textContent = `${index + 1} / ${LESSONS.length}`;
+  document.getElementById('prev-btn').disabled = index === 0;
+  document.getElementById('next-btn').disabled = index === LESSONS.length - 1;
+
+  // Build lesson content
+  const tagClass = lesson.tag === 'theory' ? 'tag-theory' : lesson.tag === 'practice' ? 'tag-practice' : 'tag-challenge';
+  document.getElementById('lesson-card').innerHTML = `
+    <span class="lesson-tag ${tagClass}">${lesson.tagLabel}</span>
+    <h2>${lesson.title}</h2>
+    <p class="subtitle">${lesson.subtitle}</p>
+    ${lesson.content}
+    <button class="hint-toggle" onclick="toggleHint()">💡 Mostra suggerimento</button>
+    <div id="hint-box"><p>💡 <strong>Suggerimento:</strong> ${lesson.hint}</p></div>
+    <div id="complete-banner">
+      <div class="icon">🎉</div>
+      <p><strong>Ottimo lavoro!</strong> Hai completato questa lezione con successo.</p>
+      ${index < LESSONS.length - 1 ? `<button id="next-lesson-btn" onclick="navigate(1)">Prossima lezione →</button>` : '<span style="color:var(--green);font-weight:700;margin-left:auto">🏆 Tutorial completato!</span>'}
+    </div>
+  `;
+
+  // Load code
+  const code = userCode[index] !== undefined ? userCode[index] : lesson.code;
+  document.getElementById('code-editor').value = code;
+
+  // Clear console
+  document.getElementById('console-panel').innerHTML = '';
+
+  // Show complete banner if already done
+  if (completed.has(index)) {
+    document.getElementById('complete-banner').style.display = 'flex';
+  }
+
+  updateSidebar();
+  runCode();
+
+  // Scroll lesson to top
+  document.getElementById('lesson-view').scrollTop = 0;
+}
+
+function navigate(dir) {
+  const next = currentLesson + dir;
+  if (next >= 0 && next < LESSONS.length) loadLesson(next);
+}
+
+// ===== EDITOR =====
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && tab === 'editor') || (i === 1 && tab === 'console'));
+  });
+  document.getElementById('code-panel').style.display = tab === 'editor' ? 'block' : 'none';
+  document.getElementById('preview-panel').style.display = tab === 'editor' ? 'flex' : 'none';
+  document.getElementById('console-panel').style.display = tab === 'console' ? 'block' : 'none';
+}
+
+function resetCode() {
+  delete userCode[currentLesson];
+  document.getElementById('code-editor').value = LESSONS[currentLesson].code;
+  runCode();
+}
+
+function runCode() {
+  const code = document.getElementById('code-editor').value;
+  userCode[currentLesson] = code;
+
+  const html = buildPreviewHTML(code);
+  const frame = document.getElementById('preview-frame');
+  frame.srcdoc = html;
+
+  checkCompletion(code);
+}
+
+function buildPreviewHTML(code) {
+  const escaped = code
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f1117; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; padding: 12px; min-height: 100vh; }
+  button { font-family: inherit; }
+  input, textarea { font-family: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.development.js"><\/script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"><\/script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>
+<script type="text/babel">
+${code}
+<\/script>
+<script>
+window.onerror = function(msg, src, line) {
+  document.body.innerHTML = '<div style="color:#f87171;padding:16px;font-family:monospace;font-size:13px;background:#1a0a0a;min-height:100vh"><strong>⚠ Errore:</strong><br>' + msg + '<br><small style=\\"color:#8892b0\\">Riga ' + line + '</small></div>';
+};
+<\/script>
+</body>
+</html>`;
+}
+
+function checkCompletion(code) {
+  const lesson = LESSONS[currentLesson];
+  if (lesson.validate && lesson.validate(code) && !completed.has(currentLesson)) {
+    completed.add(currentLesson);
+    updateSidebar();
+    const banner = document.getElementById('complete-banner');
+    if (banner) {
+      banner.style.display = 'flex';
+      document.getElementById('lesson-view').scrollTo({ top: document.getElementById('lesson-view').scrollHeight, behavior: 'smooth' });
+    }
+    logConsole('✓ Esercizio completato!', 'success');
+  }
+}
+
+function logConsole(msg, type = 'log') {
+  const panel = document.getElementById('console-panel');
+  const line = document.createElement('div');
+  line.className = `console-line console-${type}`;
+  line.textContent = msg;
+  panel.appendChild(line);
+}
+
+function toggleHint() {
+  const box = document.getElementById('hint-box');
+  box.style.display = box.style.display === 'block' ? 'none' : 'block';
+}
+
+// ===== SIDEBAR MOBILE =====
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
+// ===== TAB key in editor =====
+document.addEventListener('DOMContentLoaded', () => {
+  const editor = document.getElementById('code-editor');
+  editor.addEventListener('keydown', e => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const start = editor.selectionStart;
+      const end = editor.selectionEnd;
+      editor.value = editor.value.substring(0, start) + '  ' + editor.value.substring(end);
+      editor.selectionStart = editor.selectionEnd = start + 2;
+    }
+  });
+  init();
+});
+</script>
+</body>
+</html>
