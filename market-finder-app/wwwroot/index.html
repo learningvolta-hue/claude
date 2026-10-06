@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Market Finder Pro — Marco Consiglio</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<aside id="sidebar">
+  <div class="logo">
+    🔍 Market Finder Pro
+    <span>by Marco Consiglio</span>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Progresso corso</span>
+      <span id="prog-label">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <nav>
+    <div class="nav-item active" data-nav="home" onclick="goTo('home')">
+      <div class="nav-icon" style="background:#7c5af022">🏠</div>
+      <div class="nav-title">Home<div class="nav-sub">Introduzione al corso</div></div>
+    </div>
+    <div class="nav-item" data-nav="mod1" onclick="goTo('mod1')">
+      <div class="nav-icon" style="background:#5af0c422">📋</div>
+      <div class="nav-title">Modulo 1<div class="nav-sub">Sondaggi e ricerca</div></div>
+    </div>
+    <div class="nav-item" data-nav="mod2" onclick="goTo('mod2')">
+      <div class="nav-icon" style="background:#f0c45a22">🔎</div>
+      <div class="nav-title">Modulo 2<div class="nav-sub">Analisi delle ricerche</div></div>
+    </div>
+    <div class="nav-item" data-nav="mod3" onclick="goTo('mod3')">
+      <div class="nav-icon" style="background:#f05a7c22">🤖</div>
+      <div class="nav-title">Modulo 3<div class="nav-sub">AI nella ricerca prodotti</div></div>
+    </div>
+    <div class="nav-item" data-nav="mod4" onclick="goTo('mod4')">
+      <div class="nav-icon" style="background:#5af07c22">📊</div>
+      <div class="nav-title">Modulo 4<div class="nav-sub">Statistiche di vendita</div></div>
+    </div>
+    <div class="nav-item" data-nav="checklist" onclick="goTo('checklist')">
+      <div class="nav-icon" style="background:#c45af022">✅</div>
+      <div class="nav-title">Checklist<div class="nav-sub">Piano operativo</div></div>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    © 2026 Marco Consiglio<br>marcocreazioni.it
+  </div>
+</aside>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<main id="main">
+
+  <!-- ── HOME ── -->
+  <section id="sec-home" class="section active">
+    <div class="home-hero">
+      <h1>Market Finder Pro</h1>
+      <p class="intro-text">Il corso operativo per trovare il prodotto giusto da vendere online usando dati, AI e strumenti professionali.</p>
+      <button class="btn-primary" onclick="goTo('mod1')">▶ Inizia il Corso</button>
+    </div>
+
+    <div class="modules-grid">
+      <div class="module-card" onclick="goTo('mod1')">
+        <div class="mc-num">MODULO 01</div>
+        <div class="mc-icon">📋</div>
+        <h3>Sondaggi e Creazione</h3>
+        <p>Scopri i bisogni reali dei tuoi clienti con Google Moduli e Microsoft Forms.</p>
+      </div>
+      <div class="module-card" onclick="goTo('mod2')">
+        <div class="mc-num">MODULO 02</div>
+        <div class="mc-icon">🔎</div>
+        <h3>Analisi delle Ricerche</h3>
+        <p>Keyword Tools, Google Trends e Ubersuggest per trovare nicchie profittevoli.</p>
+      </div>
+      <div class="module-card" onclick="goTo('mod3')">
+        <div class="mc-num">MODULO 03</div>
+        <div class="mc-icon">🤖</div>
+        <h3>AI nella Ricerca Prodotti</h3>
+        <p>Prompt pronti all'uso per sfruttare l'intelligenza artificiale nella ricerca.</p>
+      </div>
+      <div class="module-card" onclick="goTo('mod4')">
+        <div class="mc-num">MODULO 04</div>
+        <div class="mc-icon">📊</div>
+        <h3>Statistiche di Vendita</h3>
+        <p>eBay, Amazon e Google Merchant Center per analizzare prezzi e volumi di vendita.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MODULO 1 ── -->
+  <section id="sec-mod1" class="section">
+    <div class="section-header">
+      <div class="badge">MODULO 01</div>
+      <h1>📋 Sondaggi e Creazione</h1>
+      <p class="intro-text">Prima di investire in un prodotto, chiedi direttamente al tuo pubblico. I sondaggi sono il modo più rapido per validare un'idea di mercato.</p>
+    </div>
+
+    <h2>🧰 Gli Strumenti</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">📝</div>
+        <h3>Google Moduli</h3>
+        <p>Gratuito, integrabile con Google Sheets. Ideale per raccogliere dati da una lista email o community.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗂️</div>
+        <h3>Microsoft Forms</h3>
+        <p>Incluso in Microsoft 365. Perfetto per chi usa già l'ecosistema Microsoft in azienda.</p>
+      </div>
+    </div>
+
+    <h2>🔗 Accedi agli Strumenti</h2>
+    <a class="tool-link" href="https://forms.google.com" target="_blank">
+      <div class="tl-icon" style="background:#4285F422">📝</div>
+      <div class="tl-info"><h4>Google Moduli</h4><p>forms.google.com — Crea sondaggi gratis</p></div>
+      <div class="tl-arrow">↗</div>
+    </a>
+    <a class="tool-link" href="https://forms.microsoft.com" target="_blank">
+      <div class="tl-icon" style="background:#0078d422">🗂️</div>
+      <div class="tl-info"><h4>Microsoft Forms</h4><p>forms.microsoft.com — Incluso in M365</p></div>
+      <div class="tl-arrow">↗</div>
+    </a>
+
+    <div class="section-divider"></div>
+    <h2>✏️ Come Strutturare un Sondaggio Efficace</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">1️⃣</div>
+        <h3>Problema da risolvere</h3>
+        <p>«Qual è la tua sfida più grande quando [situazione]?»</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">2️⃣</div>
+        <h3>Soluzioni attuali</h3>
+        <p>«Cosa usi oggi per risolvere questo problema?»</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">3️⃣</div>
+        <h3>Disponibilità a pagare</h3>
+        <p>«Quanto spenderesti per una soluzione ideale?»</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">4️⃣</div>
+        <h3>Caratteristiche desiderate</h3>
+        <p>«Cosa deve assolutamente avere il prodotto perfetto?»</p>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+    <h2>🧠 Quiz di Verifica</h2>
+
+    <div class="quiz-card">
+      <div class="quiz-q">1. Qual è l'obiettivo principale di un sondaggio di mercato?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" data-ans="a" onclick="checkQuiz(this,'q1','b')">A) Aumentare i follower sui social</div>
+        <div class="quiz-opt" data-ans="b" onclick="checkQuiz(this,'q1','b')">B) Validare un'idea di prodotto raccogliendo dati reali</div>
+        <div class="quiz-opt" data-ans="c" onclick="checkQuiz(this,'q1','b')">C) Creare contenuti per il blog</div>
+      </div>
+      <div class="quiz-feedback" id="fb-q1"></div>
+    </div>
+
+    <div class="quiz-card">
+      <div class="quiz-q">2. Quale domanda è più utile in un sondaggio di validazione?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" data-ans="a" onclick="checkQuiz(this,'q2','a')">A) «Quanto spenderesti per risolvere questo problema?»</div>
+        <div class="quiz-opt" data-ans="b" onclick="checkQuiz(this,'q2','a')">B) «Ti piacerebbe un prodotto come questo?»</div>
+        <div class="quiz-opt" data-ans="c" onclick="checkQuiz(this,'q2','a')">C) «Quanti anni hai?»</div>
+      </div>
+      <div class="quiz-feedback" id="fb-q2"></div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-outline" onclick="goTo('home')">← Home</button>
+      <button class="btn-primary" onclick="completeAndGo('mod1','mod2')">Completato → Modulo 2</button>
+    </div>
+  </section>
+
+  <!-- ── MODULO 2 ── -->
+  <section id="sec-mod2" class="section">
+    <div class="section-header">
+      <div class="badge">MODULO 02</div>
+      <h1>🔎 Analisi delle Ricerche</h1>
+      <p class="intro-text">I dati di ricerca ti dicono cosa vogliono le persone <em>in questo momento</em>. Impara a usare i tool professionali per trovare nicchie profittevoli.</p>
+    </div>
+
+    <h2>🛠️ Strumenti di Analisi</h2>
+    <a class="tool-link" href="https://keywordtool.io" target="_blank">
+      <div class="tl-icon" style="background:#7c5af022">🔑</div>
+      <div class="tl-info"><h4>Keyword Tool</h4><p>keywordtool.io — Ricerche da Google, Amazon, YouTube</p></div>
+      <div class="tl-arrow">↗</div>
+    </a>
+    <a class="tool-link" href="https://trends.google.it" target="_blank">
+      <div class="tl-icon" style="background:#4285F422">📈</div>
+      <div class="tl-info"><h4>Google Trends</h4><p>trends.google.it — Tendenze di ricerca nel tempo</p></div>
+      <div class="tl-arrow">↗</div>
+    </a>
+    <a class="tool-link" href="https://app.neilpatel.com/it/ubersuggest" target="_blank">
+      <div class="tl-icon" style="background:#f05a7c22">🚀</div>
+      <div class="tl-info"><h4>Ubersuggest</h4><p>neilpatel.com — Volume, difficoltà SEO, idee di contenuto</p></div>
+      <div class="tl-arrow">↗</div>
+    </a>
+
+    <div class="section-divider"></div>
+    <h2>📖 Come Interpretare i Dati</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Volume di Ricerca</h3>
+        <p>Quante persone cercano quella parola al mese. Oltre 1.000 ricerche/mese = mercato interessante.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💪</div>
+        <h3>Difficoltà SEO (KD)</h3>
+        <p>Da 0 a 100. Sotto 40 = nicchia aggredibile. Sopra 70 = mercato dominato da grandi brand.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📉</div>
+        <h3>Tendenza (Trend)</h3>
+        <p>Un prodotto in crescita su Google Trends ha più potenziale di uno stabile o in calo.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <h3>CPC (Costo per Click)</h3>
+        <p>CPC alto = gli inserzionisti ci guadagnano. Indica che il mercato è disposto a pagare.</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <p>💡 <strong>Strategia vincente:</strong> Cerca parole chiave con volume medio (500–5.000/mese), KD basso (sotto 45) e CPC alto (sopra €0,80). Questa combinazione identifica nicchie profittevoli e non ancora saturate.</p>
+    </div>
+
+    <div class="section-divider"></div>
+    <h2>🧠 Quiz di Verifica</h2>
+
+    <div class="quiz-card">
+      <div class="quiz-q">3. Un KD (Keyword Difficulty) di 35 indica che la nicchia è…</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" data-ans="a" onclick="checkQuiz(this,'q3','a')">A) Aggredibile, con buone possibilità di posizionarsi</div>
+        <div class="quiz-opt" data-ans="b" onclick="checkQuiz(this,'q3','a')">B) Troppo competitiva, meglio evitare</div>
+        <div class="quiz-opt" data-ans="c" onclick="checkQuiz(this,'q3','a')">C) Irrilevante, non ci sono ricerche</div>
+      </div>
+      <div class="quiz-feedback" id="fb-q3"></div>
+    </div>
+
+    <div class="quiz-card">
+      <div class="quiz-q">4. Perché un CPC alto è un buon segnale per una nicchia?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" data-ans="a" onclick="checkQuiz(this,'q4','c')">A) Significa che la parola chiave ha molte ricerche</div>
+        <div class="quiz-opt" data-ans="b" onclick="checkQuiz(this,'q4','c')">B) Indica che il prodotto è facile da creare</div>
+        <div class="quiz-opt" data-ans="c" onclick="checkQuiz(this,'q4','c')">C) Gli inserzionisti spendono perché ci guadagnano — il mercato è attivo</div>
+      </div>
+      <div class="quiz-feedback" id="fb-q4"></div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-outline" onclick="goTo('mod1')">← Modulo 1</button>
+      <button class="btn-primary" onclick="completeAndGo('mod2','mod3')">Completato → Modulo 3</button>
+    </div>
+  </section>
+
+  <!-- ── MODULO 3 ── -->
+  <section id="sec-mod3" class="section">
+    <div class="section-header">
+      <div class="badge">MODULO 03</div>
+      <h1>🤖 AI nella Ricerca Prodotti</h1>
+      <p class="intro-text">L'intelligenza artificiale accelera ogni fase della ricerca di mercato. Ecco i prompt pronti da copiare e usare subito con ChatGPT, Claude o Gemini.</p>
+    </div>
+
+    <h2>📋 Prompt Pronti all'Uso</h2>
+    <p>Clicca <strong>Copia Prompt</strong>, incollalo nella tua AI preferita e personalizza le parti tra [parentesi].</p>
+
+    <div class="prompt-card">
+      <div class="pc-label">🔍 Prompt 1 — Ricerca Nicchia</div>
+      <div class="pc-text" id="p1">Sei un esperto di e-commerce e analisi di mercato. Analizza la nicchia "[inserisci categoria]" e dimmi:
+1. I 5 sotto-segmenti più profittevoli nel 2026
+2. I problemi principali che i clienti vogliono risolvere
+3. Il profilo del cliente ideale (età, interessi, comportamento d'acquisto)
+4. I 3 principali competitor e i loro punti deboli
+5. Una opportunità di mercato non ancora sfruttata
+
+Fornisci dati concreti e actionable, non risposte generiche.</div>
+      <button class="copy-btn" onclick="copyPrompt('p1',this)">📋 Copia Prompt</button>
+    </div>
+
+    <div class="prompt-card">
+      <div class="pc-label">⚔️ Prompt 2 — Analisi Concorrenza</div>
+      <div class="pc-text" id="p2">Analizza i competitor nel mercato di "[prodotto/nicchia]" su Amazon e eBay Italia.
+Per ciascuno identifica:
+- Fascia di prezzo dominante
+- Punti di forza nei titoli e nelle descrizioni
+- Recensioni negative più comuni (cosa manca ai prodotti esistenti?)
+- Gap di mercato che potrei colmare con un prodotto migliore
+
+Concludi con: qual è il posizionamento ottimale per un nuovo entrante?</div>
+      <button class="copy-btn" onclick="copyPrompt('p2',this)">📋 Copia Prompt</button>
+    </div>
+
+    <div class="prompt-card">
+      <div class="pc-label">🗣️ Prompt 3 — Voce del Cliente</div>
+      <div class="pc-text" id="p3">Simula 10 recensioni negative realistiche che i clienti potrebbero lasciare per un prodotto "[descrivi prodotto]" su Amazon.
+Le recensioni devono:
+- Riflettere frustrazioni autentiche e specifiche
+- Menzionare problemi pratici d'uso quotidiano
+- Suggerire implicitamente come il prodotto potrebbe migliorare
+- Variare per tipo di utente (principiante, esperto, utilizzo casuale, professionale)
+
+Poi dimmi: quali sono le 3 caratteristiche che un prodotto migliorato dovrebbe assolutamente avere?</div>
+      <button class="copy-btn" onclick="copyPrompt('p3',this)">📋 Copia Prompt</button>
+    </div>
+
+    <div class="prompt-card">
+      <div class="pc-label">📦 Prompt 4 — Valutazione Prodotto</div>
+      <div class="pc-text" id="p4">Valuta la fattibilità commerciale di vendere "[prodotto specifico]" online in Italia nel 2026.
+Analizza:
+1. Dimensione stimata del mercato italiano
+2. Stagionalità delle vendite (mesi migliori e peggiori)
+3. Margini tipici nel settore (produzione/acquisto vs prezzo di vendita)
+4. Canali di vendita consigliati (Amazon, proprio e-commerce, eBay, social commerce)
+5. Rischi principali e come mitigarli
+6. Punteggio di opportunità da 1 a 10 con motivazione
+
+Sii onesto anche sugli aspetti negativi.</div>
+      <button class="copy-btn" onclick="copyPrompt('p4',this)">📋 Copia Prompt</button>
+    </div>
+
+    <div class="prompt-card">
+      <div class="pc-label">💰 Prompt 5 — Strategia di Prezzo</div>
+      <div class="pc-text" id="p5">Aiutami a definire la strategia di prezzo ottimale per "[prodotto]" nel mercato italiano.
+Il costo di acquisto/produzione è circa [€XX].
+I competitor vendono tra [€XX] e [€XX].
+
+Dimmi:
+1. Il prezzo psicologico ottimale per massimizzare conversioni
+2. Come posizionarmi: entry-level, mid-range o premium?
+3. Una strategia di lancio (prezzo iniziale, promozioni, bundle)
+4. Come comunicare il valore per giustificare il prezzo scelto
+5. Quando e come alzare il prezzo una volta stabilita la brand awareness</div>
+      <button class="copy-btn" onclick="copyPrompt('p5',this)">📋 Copia Prompt</button>
+    </div>
+
+    <div class="section-divider"></div>
+    <h2>🧠 Quiz di Verifica</h2>
+
+    <div class="quiz-card">
+      <div class="quiz-q">5. Qual è il vantaggio principale di usare l'AI nella ricerca di mercato?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" data-ans="a" onclick="checkQuiz(this,'q5','b')">A) Sostituisce completamente la ricerca su Google</div>
+        <div class="quiz-opt" data-ans="b" onclick="checkQuiz(this,'q5','b')">B) Accelera l'analisi e genera insight in pochi secondi, da approfondire con dati reali</div>
+        <div class="quiz-opt" data-ans="c" onclick="checkQuiz(this,'q5','b')">C) Garantisce dati certi al 100% senza verifica</div>
+      </div>
+      <div class="quiz-feedback" id="fb-q5"></div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-outline" onclick="goTo('mod2')">← Modulo 2</button>
+      <button class="btn-primary" onclick="completeAndGo('mod3','mod4')">Completato → Modulo 4</button>
+    </div>
+  </section>
+
+  <!-- ── MODULO 4 ── -->
+  <section id="sec-mod4" class="section">
+    <div class="section-header">
+      <div class="badge">MODULO 04</div>
+      <h1>📊 Statistiche di Vendita</h1>
+      <p class="intro-text">I dati reali di vendita ti dicono quali prodotti si vendono, a che prezzo e in quali volumi. Ecco come leggere le piattaforme di vendita come un professionista.</p>
+    </div>
+
+    <div class="stat-platform">
+      <div class="sp-header">
+        <div class="sp-icon" style="background:#E53935">🛒</div>
+        <div class="sp-title">
+          <h3>eBay Seller — Cosa vendono gli altri</h3>
+          <p>Analisi delle inserzioni attive e vendute su eBay Italia</p>
+        </div>
+      </div>
+      <ul class="steps-list">
+        <li><div class="step-num">1</div>Vai su ebay.it e cerca il prodotto nella barra di ricerca</li>
+        <li><div class="step-num">2</div>Nel menu laterale, seleziona <strong>«Oggetti venduti»</strong> per vedere i prezzi reali di mercato</li>
+        <li><div class="step-num">3</div>Analizza: prezzo medio, numero di vendite, condizione del prodotto (nuovo/usato)</li>
+        <li><div class="step-num">4</div>Confronta con le inserzioni attive per capire la concorrenza attuale</li>
+        <li><div class="step-num">5</div>Usa Terapeak (strumento interno eBay) per dati storici e trend</li>
+      </ul>
+      <a class="tool-link" style="margin-top:12px" href="https://www.ebay.it/sh/research" target="_blank">
+        <div class="tl-icon" style="background:#E5393522">📊</div>
+        <div class="tl-info"><h4>eBay Seller Hub — Research</h4><p>Accedi con account venditore</p></div>
+        <div class="tl-arrow">↗</div>
+      </a>
+    </div>
+
+    <div class="stat-platform">
+      <div class="sp-header">
+        <div class="sp-icon" style="background:#FF9900">📦</div>
+        <div class="sp-title">
+          <h3>Amazon Seller — Dati di mercato</h3>
+          <p>Best Seller Rank e strumenti per analizzare volumi su Amazon</p>
+        </div>
+      </div>
+      <ul class="steps-list">
+        <li><div class="step-num">1</div>Cerca il prodotto su Amazon.it e apri la scheda di un articolo simile</li>
+        <li><div class="step-num">2</div>Scorri fino a <strong>«Informazioni aggiuntive»</strong> — trova il <strong>Best Seller Rank (BSR)</strong></li>
+        <li><div class="step-num">3</div>BSR sotto 50.000 nella categoria = si vende ogni giorno. Sotto 10.000 = molto richiesto</li>
+        <li><div class="step-num">4</div>Usa <strong>Jungle Scout</strong> o <strong>Helium 10</strong> per stime di vendita mensile</li>
+        <li><div class="step-num">5</div>Analizza le recensioni: i problemi segnalati = opportunità per il tuo prodotto migliore</li>
+      </ul>
+      <a class="tool-link" style="margin-top:12px" href="https://www.junglescout.com" target="_blank">
+        <div class="tl-icon" style="background:#FF990022">🌿</div>
+        <div class="tl-info"><h4>Jungle Scout</h4><p>Stime di vendita e analisi Amazon</p></div>
+        <div class="tl-arrow">↗</div>
+      </a>
+    </div>
+
+    <div class="stat-platform">
+      <div class="sp-header">
+        <div class="sp-icon" style="background:#4285F4">🛍️</div>
+        <div class="sp-title">
+          <h3>Google Merchant Center — Prezzi e Shopping</h3>
+          <p>Analisi dei prezzi nel Google Shopping per benchmark di mercato</p>
+        </div>
+      </div>
+      <ul class="steps-list">
+        <li><div class="step-num">1</div>Vai su <strong>google.it/shopping</strong> e cerca il prodotto che vuoi analizzare</li>
+        <li><div class="step-num">2</div>Osserva la fascia di prezzo dominante e i brand più visibili</li>
+        <li><div class="step-num">3</div>Clicca su <strong>«Vedi tutti i negozi»</strong> per confrontare prezzi e merchant</li>
+        <li><div class="step-num">4</div>Nel Merchant Center (se hai un account), usa il <strong>Price Insights</strong> per capire il tuo posizionamento</li>
+        <li><div class="step-num">5</div>Controlla quali annunci Shopping appaiono: indicano chi sta investendo in pubblicità</li>
+      </ul>
+      <a class="tool-link" style="margin-top:12px" href="https://merchants.google.com" target="_blank">
+        <div class="tl-icon" style="background:#4285F422">🛒</div>
+        <div class="tl-info"><h4>Google Merchant Center</h4><p>merchants.google.com — Gestione feed prodotti</p></div>
+        <div class="tl-arrow">↗</div>
+      </a>
+    </div>
+
+    <div class="section-divider"></div>
+    <h2>🧠 Quiz di Verifica</h2>
+
+    <div class="quiz-card">
+      <div class="quiz-q">6. Su Amazon, un Best Seller Rank (BSR) di 8.000 in una categoria indica che il prodotto…</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" data-ans="a" onclick="checkQuiz(this,'q6','a')">A) È molto richiesto e si vende con alta frequenza ogni giorno</div>
+        <div class="quiz-opt" data-ans="b" onclick="checkQuiz(this,'q6','a')">B) È poco venduto e ha scarso interesse</div>
+        <div class="quiz-opt" data-ans="c" onclick="checkQuiz(this,'q6','a')">C) Ha un prezzo troppo alto rispetto alla concorrenza</div>
+      </div>
+      <div class="quiz-feedback" id="fb-q6"></div>
+    </div>
+
+    <div class="quiz-card">
+      <div class="quiz-q">7. Perché leggere le recensioni negative dei prodotti concorrenti su Amazon è utile?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" data-ans="a" onclick="checkQuiz(this,'q7','c')">A) Per copiare le descrizioni dei prodotti dei competitor</div>
+        <div class="quiz-opt" data-ans="b" onclick="checkQuiz(this,'q7','c')">B) Per capire a quale prezzo vendono i competitor</div>
+        <div class="quiz-opt" data-ans="c" onclick="checkQuiz(this,'q7','c')">C) Per scoprire i problemi irrisolti = opportunità per creare un prodotto migliore</div>
+      </div>
+      <div class="quiz-feedback" id="fb-q7"></div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn-outline" onclick="goTo('mod3')">← Modulo 3</button>
+      <button class="btn-primary" onclick="completeAndGo('mod4','checklist')">Completato → Checklist Finale</button>
+    </div>
+  </section>
+
+  <!-- ── CHECKLIST ── -->
+  <section id="sec-checklist" class="section">
+    <div class="section-header">
+      <div class="badge">PIANO OPERATIVO</div>
+      <h1>✅ Checklist Market Finder</h1>
+      <p class="intro-text">Il tuo piano d'azione completo per trovare e validare il prodotto da vendere online. Spunta ogni voce man mano che la completi.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h2>📋 Fase 1 — Definisci il Mercato</h2>
+      <div class="checklist-item">
+        <input type="checkbox" id="c1">
+        <label for="c1">Scegli 3 nicchie di interesse
+          <span>Es. accessori fitness, cucina naturale, produttività per freelance</span>
+        </label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="c2">
+        <label for="c2">Crea un sondaggio con Google Moduli o Microsoft Forms
+          <span>Minimo 5 domande sui bisogni, problemi e disponibilità a pagare</span>
+        </label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="c3">
+        <label for="c3">Raccogli almeno 20 risposte al sondaggio
+          <span>Condividi su gruppi Facebook, LinkedIn, community di settore</span>
+        </label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="c4">
+        <label for="c4">Analizza le risposte e identifica il problema principale
+          <span>La risposta più frequente è il tuo punto di partenza</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h2>🔎 Fase 2 — Analizza le Ricerche</h2>
+      <div class="checklist-item">
+        <input type="checkbox" id="c5">
+        <label for="c5">Cerca le parole chiave principali su Ubersuggest
+          <span>Punta a volume 500–5.000/mese e KD sotto 45</span>
+        </label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="c6">
+        <label for="c6">Verifica il trend su Google Trends (ultimi 12 mesi)
+          <span>Mercato stabile o in crescita = sì; in forte calo = evita</span>
+        </label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="c7">
+        <label for="c7">Trova 5 parole chiave long-tail correlate con Keyword Tool
+          <span>Le long-tail hanno meno concorrenza e conversioni più alte</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h2>🤖 Fase 3 — Ricerca con AI</h2>
+      <div class="checklist-item">
+        <input type="checkbox" id="c8">
+        <label for="c8">Usa il Prompt 1 (Ricerca Nicchia) su ChatGPT / Claude
+          <span>Personalizza con la tua nicchia specifica</span>
+        </label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="c9">
+        <label for="c9">Usa il Prompt 2 (Analisi Concorrenza) per mappare i competitor
+          <span>Identifica almeno 3 competitor e i loro punti deboli</span>
+        </label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="c10">
+        <label for="c10">Usa il Prompt 4 (Valutazione Prodotto) per stimare la fattibilità
+          <span>Richiedi punteggio di opportunità e analisi dei rischi</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:24px">
+      <h2>📊 Fase 4 — Verifica con Dati Reali</h2>
+      <div class="checklist-item">
+        <input type="checkbox" id="c11">
+        <label for="c11">Analizza i prodotti venduti su eBay (filtro «Oggetti venduti»)
+          <span>Verifica prezzi reali e frequenza di vendita</span>
+        </label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="c12">
+        <label for="c12">Controlla il Best Seller Rank su Amazon per prodotti simili
+          <span>BSR sotto 50.000 = mercato attivo. Leggi le recensioni negative</span>
+        </label>
+      </div>
+      <div class="checklist-item">
+        <input type="checkbox" id="c13">
+        <label for="c13">Verifica prezzi e concorrenti su Google Shopping
+          <span>Analizza la fascia di prezzo dominante e il posizionamento ottimale</span>
+        </label>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn-primary" onclick="downloadChecklist()">⬇️ Scarica Checklist (.txt)</button>
+      <button class="btn-outline" onclick="resetChecklist()">🔄 Reset</button>
+      <button class="btn-outline" onclick="goTo('home')">🏠 Torna alla Home</button>
+    </div>
+  </section>
+
+</main>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -10,3 +10,7 @@ screenshot-app/publish-small/
 ## OS
 .DS_Store
 Thumbs.db
+
+## Market Finder Pro
+market-finder-app/bin/
+market-finder-app/obj/
