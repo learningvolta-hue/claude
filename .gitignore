@@ -1,0 +1,14 @@
+## Output di compilazione
+bin/
+obj/
+dist/
+publish/
+TestResults/
+*.user
+*.suo
+.vs/
+.vscode/
+
+## Sistema operativo
+.DS_Store
+Thumbs.db

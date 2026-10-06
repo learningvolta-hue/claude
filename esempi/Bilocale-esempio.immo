@@ -1,0 +1,62 @@
+{
+  "Immobile": {
+    "Nome": "Bilocale di esempio – zona universitaria",
+    "Indirizzo": "Via dell'Esempio 12",
+    "Citta": "Bologna",
+    "SuperficieMq": 60,
+    "RenditaCatastale": 620,
+    "Note": "Scenario didattico di Marco Consiglio: modifica i valori e osserva come cambiano gli indicatori."
+  },
+  "Acquisto": {
+    "Prezzo": 195000,
+    "Venditore": "Privato",
+    "PrimaCasa": false,
+    "ProvvigioneAgenziaPerc": 3,
+    "SpeseNotaio": 2800,
+    "CostiRistrutturazione": 8000,
+    "ArredamentoEAltro": 6000
+  },
+  "Affitto": {
+    "CanoneMensile": 950,
+    "MesiSfittoAnnui": 0.5,
+    "CanoneConcordato": false
+  },
+  "Spese": {
+    "AliquotaImuPerMille": 10.6,
+    "CondominioProprietarioAnnuo": 450,
+    "ManutenzionePercCanone": 5,
+    "AssicurazioneAnnua": 180,
+    "GestionePercCanone": 0
+  },
+  "Mutuo": {
+    "Attivo": true,
+    "PercentualeFinanziata": 70,
+    "TassoAnnuoPerc": 3.3,
+    "DurataAnni": 25,
+    "SpeseIstruttoria": 1000,
+    "SpesePerizia": 300
+  },
+  "Fisco": {
+    "Regime": "CedolareSecca",
+    "AliquotaCedolarePerc": 21,
+    "AliquotaMarginaleIrpefPerc": 33,
+    "AddizionaliIrpefPerc": 2
+  },
+  "Proiezione": {
+    "AnniDetenzione": 10,
+    "RivalutazioneAnnuaPerc": 2,
+    "CrescitaCanoneAnnuaPerc": 2,
+    "InflazioneSpeseAnnuaPerc": 2,
+    "CostiVenditaPerc": 3,
+    "RendimentoObiettivoPerc": 5
+  },
+  "Comparabili": [
+    { "Descrizione": "Annuncio bilocale stessa via", "Tipo": "Vendita", "Prezzo": 210000, "SuperficieMq": 62 },
+    { "Descrizione": "Compravendita 2026 via vicina", "Tipo": "Vendita", "Prezzo": 182000, "SuperficieMq": 58 },
+    { "Descrizione": "Annuncio bilocale ristrutturato", "Tipo": "Vendita", "Prezzo": 229000, "SuperficieMq": 65 },
+    { "Descrizione": "Annuncio da ristrutturare", "Tipo": "Vendita", "Prezzo": 168000, "SuperficieMq": 60 },
+    { "Descrizione": "Affitto bilocale arredato", "Tipo": "Affitto", "Prezzo": 1000, "SuperficieMq": 60 },
+    { "Descrizione": "Affitto bilocale zona stazione", "Tipo": "Affitto", "Prezzo": 900, "SuperficieMq": 55 },
+    { "Descrizione": "Affitto 2 locali con balcone", "Tipo": "Affitto", "Prezzo": 1050, "SuperficieMq": 66 }
+  ]
+}
