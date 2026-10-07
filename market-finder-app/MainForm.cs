@@ -27,8 +27,7 @@ public class MainForm : Form
         StartPosition = FormStartPosition.CenterScreen;
         BackColor = Color.FromArgb(0x0f, 0x0f, 0x1a);
 
-        using (var icon = EmbeddedContent.OpenIcon())
-            if (icon != null) Icon = new Icon(icon);
+        Icon = LoadAppIcon();
 
         _web.DefaultBackgroundColor = BackColor;
         Controls.Add(_web);
@@ -155,6 +154,20 @@ public class MainForm : Form
             WindowState = _stateBeforeFullscreen;
         }
         _fullscreen = !_fullscreen;
+    }
+
+    // Icona di finestra e barra delle applicazioni: prima quella incorporata,
+    // in alternativa quella dell'EXE stesso
+    private static Icon? LoadAppIcon()
+    {
+        try
+        {
+            using var stream = EmbeddedContent.OpenIcon();
+            if (stream != null) return new Icon(stream);
+        }
+        catch (ArgumentException) { }
+
+        return Environment.ProcessPath is { } exe ? Icon.ExtractAssociatedIcon(exe) : null;
     }
 
     private static void OpenExternal(string url)
